@@ -31,17 +31,17 @@ class CompanyCardActivity : AppCompatActivity(), CompanyCardInterface.View {
     }
 
     override fun setListeners() {
-        //TODO("Not yet implemented")
+        srlCompanyCard.setOnRefreshListener { presenter.updateCompanyCard() }
     }
 
     override fun updateCard(companyCard: CompanyCard) {
         companyCard.run {
-            tvCompanyName.text = name
-            tvDescription.text = description
-            tvLat.text = lat.toString()
-            tvLon.text = lon.toString()
-            tvWww.text = www
-            tvPhone.text = phone
+            tvCompanyName.text = if (name.isNotEmpty()) name else "-"
+            tvDescription.text = if (description.isNotEmpty()) name else "-"
+            tvLat.text = if (lat.toString().isNotEmpty()) name else "-"
+            tvLon.text = if (lon.toString().isNotEmpty()) name else "-"
+            tvWww.text = if (www.isNotEmpty()) name else "-"
+            tvPhone.text = if (phone.isNotEmpty()) name else "-"
 
             Glide.with(applicationContext).load(BuildConfig.URL + img).error(R.drawable.ic_broken_image).into(ivCompanyImage)
         }
@@ -60,10 +60,7 @@ class CompanyCardActivity : AppCompatActivity(), CompanyCardInterface.View {
     }
 
     override fun setLoadingProgressBarVisibility(visible: Boolean) {
-        if (visible)
-            pbLoading.visibility = View.VISIBLE
-        else
-            pbLoading.visibility = View.GONE
+        srlCompanyCard.isRefreshing = visible
     }
 
     override fun setErrorTextVisibility(visible: Boolean) {

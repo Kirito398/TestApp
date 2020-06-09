@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
 import androidx.recyclerview.widget.GridLayoutManager
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.example.testapp.R
 import com.example.testapp.data.api.ApiFactory
 import com.example.testapp.data.repositories.MainRepository
@@ -37,7 +38,7 @@ class CompanyListActivity : AppCompatActivity(), CompanyListInterface.View {
     }
 
     override fun setListeners() {
-        //TODO("Not yet implemented")
+        srlCompanyListLayout.setOnRefreshListener { presenter.updateCompanyList() }
     }
 
     override fun updateCompanyList(list: List<Company>) {
@@ -55,10 +56,7 @@ class CompanyListActivity : AppCompatActivity(), CompanyListInterface.View {
     }
 
     override fun setLoadingProgressBarVisibility(visible: Boolean) {
-        if (visible)
-            pbLoading.visibility = View.VISIBLE
-        else
-            pbLoading.visibility = View.GONE
+        srlCompanyListLayout.isRefreshing = visible
     }
 
     override fun openCompanyCardActivity() {
