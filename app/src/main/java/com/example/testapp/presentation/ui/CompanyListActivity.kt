@@ -1,5 +1,6 @@
 package com.example.testapp.presentation.ui
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
@@ -16,19 +17,20 @@ import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.activity_company_list.*
 
 class CompanyListActivity : AppCompatActivity(), CompanyListInterface.View {
-    lateinit var presenter: CompanyListPresenter
-
-    private val rvAdapter = CompanyListAdapter(mutableListOf())
+    lateinit var presenter: CompanyListInterface.Presenter
+    private lateinit var rvAdapter: CompanyListAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_company_list)
 
-        presenter = CompanyListPresenter(MainInteractor(MainRepository(ApiFactory.getRestClient(applicationContext))), this)
+        presenter = CompanyListPresenter(MainInteractor.getInstance(MainRepository(ApiFactory.getRestClient(applicationContext))), this)
         presenter.init()
     }
 
     override fun initVars() {
+        rvAdapter = CompanyListAdapter(mutableListOf(), presenter)
+
         rvCompanyList.setHasFixedSize(true)
         rvCompanyList.layoutManager = GridLayoutManager(applicationContext, 1)
         rvCompanyList.adapter = rvAdapter
@@ -43,10 +45,13 @@ class CompanyListActivity : AppCompatActivity(), CompanyListInterface.View {
         tvEmptyList.visibility = View.GONE
 
         rvAdapter.updateList(list)
+
+        setLoadingProgressBarVisibility(false)
     }
 
     override fun updateCompanyListError(message: String) {
         Snackbar.make(clCompanyListActivity, message, Snackbar.LENGTH_LONG).show()
+        setLoadingProgressBarVisibility(false)
     }
 
     override fun setLoadingProgressBarVisibility(visible: Boolean) {
@@ -54,5 +59,10 @@ class CompanyListActivity : AppCompatActivity(), CompanyListInterface.View {
             pbLoading.visibility = View.VISIBLE
         else
             pbLoading.visibility = View.GONE
+    }
+
+    override fun openCompanyCardActivity() {
+        val intent = Intent(this, CompanyCardActivity::class.java)
+        startActivity(intent)
     }
 }

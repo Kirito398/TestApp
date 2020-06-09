@@ -9,10 +9,12 @@ interface CompanyListInterface {
         fun updateCompanyList(list: List<Company>)
         fun updateCompanyListError(message: String)
         fun setLoadingProgressBarVisibility(visible: Boolean)
+        fun openCompanyCardActivity()
     }
 
     interface Presenter {
         fun init()
         fun updateCompanyList()
+        fun onCompanyItemClicked(id: Int)
     }
 }

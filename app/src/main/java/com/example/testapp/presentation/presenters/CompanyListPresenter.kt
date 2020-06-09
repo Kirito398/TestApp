@@ -26,8 +26,12 @@ class CompanyListPresenter (private val interactor: MainInteractor, private val 
             withContext(Dispatchers.Main) {
                 if (result is Result.Success<List<Company>>) view.updateCompanyList(result.data)
                 else view.updateCompanyListError((result as Result.Error).exception.toString())
-                view.setLoadingProgressBarVisibility(false)
             }
         }
+    }
+
+    override fun onCompanyItemClicked(id: Int) {
+        interactor.setCurrentCompanyID(id)
+        view.openCompanyCardActivity()
     }
 }
