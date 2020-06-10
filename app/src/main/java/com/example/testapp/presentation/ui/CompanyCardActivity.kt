@@ -37,11 +37,11 @@ class CompanyCardActivity : AppCompatActivity(), CompanyCardInterface.View {
     override fun updateCard(companyCard: CompanyCard) {
         companyCard.run {
             tvCompanyName.text = if (name.isNotEmpty()) name else "-"
-            tvDescription.text = if (description.isNotEmpty()) name else "-"
-            tvLat.text = if (lat.toString().isNotEmpty()) name else "-"
-            tvLon.text = if (lon.toString().isNotEmpty()) name else "-"
-            tvWww.text = if (www.isNotEmpty()) name else "-"
-            tvPhone.text = if (phone.isNotEmpty()) name else "-"
+            tvDescription.text = if (description.isNotEmpty()) description else "-"
+            tvLat.text = if (lat.toString().isNotEmpty()) lat.toString() else "-"
+            tvLon.text = if (lon.toString().isNotEmpty()) lon.toString() else "-"
+            tvWww.text = if (www.isNotEmpty()) www else "-"
+            tvPhone.text = if (phone.isNotEmpty()) phone else "-"
 
             Glide.with(applicationContext).load(BuildConfig.URL + img).error(R.drawable.ic_broken_image).into(ivCompanyImage)
         }
